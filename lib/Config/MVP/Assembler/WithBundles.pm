@@ -32,9 +32,10 @@ sequence.  It then gets a description of the new sections to introduce, like
 this:
 
   my @new_config = $bundle_section->package->$method({
-    name    => $bundle_section->name,
-    package => $bundle_section->package,
-    payload => $bundle_section->payload,
+    name      => $bundle_section->name,
+    package   => $bundle_section->package,
+    payload   => $bundle_section->payload,
+    assembler => $bundle_section->sequence->assembler,
   });
 
 (We pass a hashref rather than a section so that bundles can be expanded
@@ -79,6 +80,7 @@ sub replace_bundle_with_contents {
     name    => $bundle_sec->name,
     package => $bundle_sec->package,
     payload => $bundle_sec->payload,
+    assembler => $self,  # $bundle_sec->sequence->assembler
   });
 };
 
@@ -97,6 +99,7 @@ sub _add_bundle_contents {
         name    => $name,
         package => $package,
         payload => $payload,
+        assembler => $self, 
       });
     } else {
       my $section = $self->section_class->new({
